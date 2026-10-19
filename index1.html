@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sanctify - To Do List</title>
+
+<style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:#172033;background:#f3f6fc;font-synthesis:none}
+    body{min-height:100vh;display:flex;flex-direction:column;background:radial-gradient(ellipse at top right,#e1edff 0,transparent 42%),#f3f6fc}
+    .top-bar{overflow:hidden;white-space:nowrap;background:#111827;color:#dbeafe;padding:10px 0}
+    .marquee{display:flex;width:max-content;animation:move 28s linear infinite}
+    .marquee span{padding:0 34px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+    @keyframes move{to{transform:translateX(-50%)}}
+    header{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:22px clamp(20px,7vw,100px);background:rgba(255,255,255,.82);border-bottom:1px solid #e4eaf4;box-shadow:0 4px 20px rgba(20,42,80,.04)}
+    .logo{font-size:32px;font-weight:800;letter-spacing:-1.5px;color:#1d4ed8}
+    nav ul{display:flex;align-items:center;gap:10px;list-style:none}
+    nav ul li a{display:block;padding:10px 14px;border-radius:10px;text-decoration:none;color:#475569;font-size:15px;font-weight:600;transition:.2s}
+    nav ul li a:hover,nav ul li a:focus-visible{background:#eff6ff;color:#1d4ed8;outline:none}
+    .container{width:min(92%,560px);margin:clamp(42px,9vh,90px) auto; padding:34px;background:#fff;border:1px solid #e6ebf3;border-radius:22px;box-shadow:0 24px 60px rgba(33,54,91,.12)}
+    .container h2{text-align:center;margin-bottom:8px;font-size:28px;letter-spacing:-.7px;color:#172033}
+    .container h2::after{content:"Add a task and keep your day on track.";display:block;margin-top:9px;color:#8490a3;font-size:14px;font-weight:400;letter-spacing:0}
+    .input-box{display:flex;gap:10px;margin-top:26px}
+    .input-box input{min-width:0;flex:1;padding:14px 16px;border:1px solid #d9e1ed;border-radius:12px;background:#fbfcfe;color:#172033;font:inherit;font-size:15px;outline:none;transition:.2s}
+    .input-box input:focus{border-color:#5284f4;box-shadow:0 0 0 4px rgba(82,132,244,.14)}
+    .input-box button{padding:0 22px;border:0;border-radius:12px;background:linear-gradient(135deg,#4f7cf7,#315ee8);color:#fff;font:inherit;font-weight:700;cursor:pointer;box-shadow:0 7px 15px rgba(49,94,232,.2);transition:transform .2s,box-shadow .2s}
+    .input-box button:hover{transform:translateY(-1px);box-shadow:0 10px 20px rgba(49,94,232,.28)}
+    #taskList{display:grid;gap:10px;margin-top:22px;list-style:none}
+    #taskList li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 14px;border:1px solid #e8edf5;border-radius:12px;background:#fbfcff;color:#344054;overflow-wrap:anywhere}
+    #taskList li span{cursor:pointer;line-height:1.5}
+    .completed{text-decoration:line-through;color:#98a2b3}
+    .buttons{display:flex;flex:none;gap:7px}
+    .buttons button{padding:7px 10px;border:0;border-radius:8px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:filter .2s}
+    .buttons button:hover{filter:brightness(.95)}
+    .edit{background:#fff4d6;color:#a56800}
+    .delete{background:#fee4e2;color:#b42318}
+    footer{margin-top:auto;padding:20px;text-align:center;color:#78859a;font-size:13px;border-top:1px solid #e4eaf4;background:rgba(255,255,255,.55)}
+    @media(max-width:600px){header{align-items:flex-start;flex-direction:column;padding:18px 5%}.logo{font-size:28px}nav ul{flex-wrap:wrap;gap:2px}nav ul li a{padding:8px 10px;font-size:14px}.container{padding:25px 20px;margin:38px auto}.container h2{font-size:24px}.input-box{gap:8px}.input-box button{padding:0 16px}#taskList li{align-items:flex-start;flex-direction:column}.buttons{align-self:flex-end}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+
+</head>
+<body>
+
+<div class="top-bar">
+<div class="marquee">
+<span>Digital Marketing</span>
+<span>Direct Marketing</span>
+<span>Social Media Marketing</span>
+<span>Visual Advertising</span>
+<span>Email Marketing</span>
+<span>Affiliate Marketing</span>
+</div>
+</div>
+
+<header>
+
+<div class="logo">
+Sanctify
+</div>
+
+<nav>
+<ul>
+<li><a href="#">Home</a></li>
+<li><a href="#">Products</a></li>
+<li><a href="#">About</a></li>
+<li><a href="#">Contact</a></li>
+</ul>
+</nav>
+
+</header>
+
+<div class="container">
+
+<h2>My To-Do List</h2>
+
+<div class="input-box">
+<input type="text" id="taskInput" placeholder="Enter your task">
+<button onclick="addTask()">Add</button>
+</div>
+
+<ul id="taskList"></ul>
+
+</div>
+
+<footer>
+© 2026 Sanctify | Internship Project
+</footer>
+
+<script>
+
+function addTask(){
+
+let input=document.getElementById("taskInput");
+
+if(input.value.trim()==""){
+alert("Please enter a task");
+return;
+}
+
+let li=document.createElement("li");
+
+let text=document.createElement("span");
+text.innerHTML=input.value;
+
+text.onclick=function(){
+text.classList.toggle("completed");
+}
+
+let buttons=document.createElement("div");
+buttons.className="buttons";
+
+let edit=document.createElement("button");
+edit.innerHTML="Edit";
+edit.className="edit";
+
+edit.onclick=function(){
+
+let newTask=prompt("Edit Task",text.innerHTML);
+
+if(newTask!=null && newTask!=""){
+text.innerHTML=newTask;
+}
+
+}
+
+let del=document.createElement("button");
+del.innerHTML="Delete";
+del.className="delete";
+
+del.onclick=function(){
+li.remove();
+}
+
+buttons.appendChild(edit);
+buttons.appendChild(del);
+
+li.appendChild(text);
+li.appendChild(buttons);
+
+document.getElementById("taskList").appendChild(li);
+
+input.value="";
+
+}
+
+</script>
+
+</body>
+</html>
